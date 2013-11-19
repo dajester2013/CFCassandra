@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2013 dajester2013
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<project name="CFCassandra" xmlns:ivy="antlib:org.apache.ivy.ant" default="railo-archive">
+	
+	<target name="load-ivy">
+		<path id="ivy.lib.path">
+			<pathelement location="lib/commons-codec-1.2.jar" />
+			<pathelement location="lib/commons-httpclient-3.0.jar" />
+			<pathelement location="lib/commons-logging-1.0.4.jar" />
+			<pathelement location="lib/commons-vfs-1.0.jar" />
+			<pathelement location="lib/jsch-0.1.31.jar" />
+			<pathelement location="lib/ivy-2.3.0.jar" />
+			<pathelement location="lib/oro-2.0.8.jar" />
+		</path>
+		
+		<taskdef resource="org/apache/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
+	</target>
+	
+	<target name="resolve">
+		<ivy:retrieve conf="default" pattern="build/dependency/astyanax/[artifact]-[revision].[ext]" />
+	</target>
+	
+	
+	<target name="report" depends="resolve">
+		<ivy:report todir="build/reports" />
+	</target>
+	
+	
+	<target name="compile" depends="resolve">
+		<copy todir="build/cfml">
+			<fileset dir="src" includes="**" />
+		</copy>
+	</target>
+	
+	
+	<target name="version" depends="load-ivy">
+		<property file="build.properties"/>
+		<ivy:info file="ivy.xml" />
+		
+		<ivy:buildnumber organisation="${ivy.organization}" module="${ivy.module}" revision="${version.prefix}" defaultbuildnumber="1" revsep="" />
+		
+		<echo file="${basedir}/build/cfml/${ant.project.name}.properties" message="version=${ivy.new.revision}" append="false" />
+		<property file="${basedir}/build/cfml/${ant.project.name}.properties" />
+
+		<echo>${ivy.revision} :: ${ivy.new.revision} :: ${ivy.build.number} :: ${ivy.new.build.number} ${version}</echo>
+		
+	</target>
+	
+	
+	<target name="railo-archive" depends="compile,version">
+		<jar basedir="build/cfml" destfile="build/${ant.project.name}.ra" includes="**">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Build-Version" value="${version}"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	
+	<target name="load-xmltask">
+		<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="lib/xmltask.jar" />
+	</target>
+	
+	
+	<target name="install-webapp" depends="load-xmltask">
+		
+	</target>
+	
+	
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+</project>
