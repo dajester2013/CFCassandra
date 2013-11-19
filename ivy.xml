@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2013 dajester2013
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<ivy-module	version="2.0" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+	<info organisation="org.jdsnet.cfml" module="CFCassandra" revision="0.1" status="integration" branch="master">
+		<license name="MIT" url="http://opensource.org/licenses/MIT"/>
+	</info>
+	
+	<configurations>
+		<conf name="default" />
+		<conf name="railo-archive" extends="default"/>
+	</configurations>
+	
+	<publications>
+		<artifact ext="ra" type="jar" name="CFCassandra" conf="railo-archive" />
+	</publications>
+	
+	<dependencies>
+		<dependency org="com.netflix.astyanax" name="astyanax-core" rev="latest.release" conf="*->default"></dependency>
+		<dependency org="com.netflix.astyanax" name="astyanax-thrift" rev="latest.release" conf="*->default"></dependency>
+		<dependency org="com.netflix.astyanax" name="astyanax-cassandra" rev="latest.release" conf="*->default"></dependency>
+		<dependency org="com.netflix.astyanax" name="astyanax-recipes" rev="latest.release" conf="*->default"></dependency>
+		<dependency org="com.netflix.astyanax" name="astyanax-queue" rev="latest.release" conf="*->default"></dependency>
+		<dependency org="com.netflix.astyanax" name="astyanax-entity-mapper" rev="latest.release" conf="*->default"></dependency>
+	</dependencies>
+	
+</ivy-module>
